@@ -12,7 +12,7 @@ var Routes = (function() {
 			return self;
 		};
 	};
-	
+
 	var Res = function Res(res) {
 		this.headers = res.headers || {};
 		this.res = res;
@@ -31,12 +31,12 @@ var Routes = (function() {
 				body = arguments[1];
 			}
 		}
- 
+
 		if (typeof body == 'number') { this.statusCode = body; body = ''; }
 		else if (typeof body == 'object') body = JSON.stringify(body);
-		
+
 		this.close(body);
- 
+
 		return this;
 	};
 	Res.prototype.write = function(data) {
@@ -54,7 +54,7 @@ var Routes = (function() {
 		this.res.close();
 		return this;
 	};
- 
+
 	var R = function Routes() {
 		this.server = require('webserver').create();
 		this.routes = [];
@@ -64,7 +64,7 @@ var Routes = (function() {
 	};
 	R.prototype.router = function(req, res, i) {
 		var i = i || 0;
- 
+
 		for (i; i < this.routes.length; i++) {
 			var route = this.routes[i];
 			if (route.method == 'ALL' || route.method == req.method) {
@@ -80,7 +80,7 @@ var Routes = (function() {
 				}
 			}
 		}
- 
+
 		res.send('Not found', 404);
 	};
 	R.prototype.addRoute = function(method, route, handler) {
@@ -111,17 +111,17 @@ var Routes = (function() {
 	R.prototype.listen = function(port) {
 		this.server.listen(port, _.bind(this.preRoute, this));
 	};
- 
+
 	R.static = function(root) {
 		var fs = require('fs'),
 			root = fs.absolute(root);
- 
+
 		return function(req, res, next) {
 			if (req.method != 'GET') return next();
- 
+
 			var resource = req.url.slice(1),
 				path = root + '/' + resource;
- 
+
 			if (resource && fs.isFile(path) && fs.isReadable(path)) {
 				var file = fs.read(path);
 				res.send(file);
@@ -130,8 +130,8 @@ var Routes = (function() {
 			}
 		}
 	};
- 
+
 	return R;
 })();
- 
+
 if (module && module.exports) module.exports = Routes;

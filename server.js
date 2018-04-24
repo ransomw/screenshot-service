@@ -10,7 +10,7 @@ app.use(function(req,res,next){
 	if(req.post.width && req.post.height){
 		if(!(isNaN(parseInt(req.post.width)) && isNaN(parseInt(req.post.height)))){
 			req.post.width = Math.abs(Math.floor(req.post.width));
-			req.post.height = Math.abs(Math.floor(req.post.height));	
+			req.post.height = Math.abs(Math.floor(req.post.height));
 		}
 		else{
 			req.post.width = null;
@@ -34,10 +34,10 @@ app.post('/',function(req, res) {
 		else{
 			setTimeout(function() {
 				var pic = renderElement(page, 'body');
-		    	res.send(pic);	
+		    	res.send(pic);
 			}, req.post.timeout || 1000);
 		}
-	});	
+	});
 });
 
 app.listen(system.args[1] || 8000);
